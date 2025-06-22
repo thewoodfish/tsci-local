@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TSCI Message Dissemination Portal</title>
+    <link href="css/style.css" rel="stylesheet" />
+    </style>
+</head>
+<body>
+    <div class="portal-container">
+        <!-- Header -->
+        <div class="header">
+            <div class="header-top">
+                <div class="logo-section">
+                    <div class="logo">
+                        <img src="img/tsci_logo.png">
+                    </div>
+                    <div class="title-section">
+                        <h1>TSCI Message Dissemination Portal</h1>
+                        <div class="subtitle">Secure Audio Message Management System</div>
+                    </div>
+                </div>
+                <div class="status-section">
+                    <div class="status-indicator">
+                        <span>🟢</span>
+                        <span>System Online</span>
+                    </div>
+                    <div class="last-updated">Last Updated: <span id="lastUpdated"></span></div>
+                </div>
+            </div>
+            <!-- <div class="classification-badge">TSCI Classified</div> -->
+        </div>
+
+        <!-- Controls Bar -->
+        <div class="controls-bar">
+            <div class="search-section">
+                <input type="text" class="search-input" placeholder="Search messages and folders..." id="searchInput">
+                <div class="filter-buttons">
+                    <button class="filter-btn active" onclick="filterFiles('all')">All</button>
+                    <button class="filter-btn" onclick="filterFiles('audio')">Audio</button>
+                    <button class="filter-btn" onclick="filterFiles('folders')">Folders</button>
+                </div>
+            </div>
+            <div class="view-controls">
+                <button class="view-btn active" onclick="toggleView('grid')" title="Grid View">📊</button>
+                <!-- <button class="view-btn" onclick="toggleView('list')" title="List View">📋</button> -->
+                <button class="view-btn" onclick="refreshDirectory()" title="Refresh">🔄</button>
+            </div>
+        </div>
+
+        <!-- Content Area -->
+        <div class="content-area">
+            <div class="breadcrumb" id="breadcrumb">
+                <span class="breadcrumb-item" onclick="navigateToPath('')">🏠 Root Directory</span>
+            </div>
+
+            <div class="stats-bar">
+                <div class="stats-info" id="statsInfo">Loading directory contents...</div>
+            </div>
+
+            <div id="loadingState" class="loading">
+                <div class="spinner"></div>
+                <div>Scanning directory for audio files and folders...</div>
+            </div>
+
+            <div id="filesContainer" style="display: none;">
+                <div class="files-grid active" id="gridView"></div>
+                <div class="files-list" id="listView"></div>
+            </div>
+
+            <div id="emptyState" class="empty-state" style="display: none;">
+                <div class="empty-icon">📁</div>
+                <h3>No files found</h3>
+                <p>No audio files or folders found in the current directory.</p>
+            </div>
+        </div>
+    </div>
+
+    <Script src="js/main.js"></Script>
+</body>
+</html>
