@@ -26,12 +26,13 @@ function hide(attr) {
 function updateText(html, text) {
   html.innerText = text;
 }
-let currentPath = '/Users/explorer/other';
+
+let currentPath = '/Volumes/PortableSSD';
 let allFiles = [];
 let filteredFiles = [];
 let currentFilter = 'all';
 let currentView = 'grid';
-const rootDir = "/Users/explorer";
+const rootDir = "/Volumes/PortableSSD";
 
 function initializePortal() {
   updateLastUpdated();
@@ -56,7 +57,7 @@ function setupEventListeners() {
   document.getElementById('searchInput').addEventListener('input', handleSearch);
 }
 
-function loadDirectory(directory = '/Users/explorer/other') {
+function loadDirectory(directory = '/Volumes/PortableSSD') {
   document.getElementById('loadingState').style.display = 'block';
   document.getElementById('filesContainer').style.display = 'none';
   document.getElementById('emptyState').style.display = 'none';
@@ -179,17 +180,29 @@ function renderGridView(files) {
     fileElement.className = 'file-item';
     fileElement.onclick = () => handleFileClick(file);
 
-    const icon = file.type === 'folder' ? '📁' :
-      file.name.endsWith('.mp3') ? '🎵' :
-        file.name.endsWith('.wav') ? '🎼' :
-          file.name.endsWith('.m4a') ? '🎧' :
-            file.name.endsWith('.aac') ? '🔊' : '🎵';
+    let iconHTML = "";
 
+    if (file.image) {
+      // Use provided album art or thumbnail image
+      iconHTML = `<div class="file-item-img center"><img src="${file.image}" class="image-art" alt="album art" /></div>`;
+    } else {
+      // Fallback emoji-based icons
+      const icon = file.type === 'folder' ? '📁' :
+        file.name.endsWith('.mp3') ? '🎵' :
+          file.name.endsWith('.wav') ? '🎼' :
+            file.name.endsWith('.m4a') ? '🎧' :
+              file.name.endsWith('.aac') ? '🔊' : '🎵';
+
+      iconHTML = `<div class="file-icon fallback-icon">${icon}</div>`;
+    }
+
+    let fileName = file.name.replace(".mp3", "").split("-").join(" ");
+    
     fileElement.innerHTML = `
-            <div class="file-icon ${file.type}">
-                ${icon}
+            <div class="${!iconHTML.indexOf("<") ? "file-img-icon" : "file-icon"} ${file.type}">
+                ${iconHTML}
             </div>
-            <div class="file-name">${file.name}</div>
+            <div class="file-name">${fileName}</div>
             <div class="file-info">
                 ${file.size ? `<div class="file-size">${file.size}</div>` : '<div class="file-size">Folder</div>'}
                 <div class="file-date">Modified: ${file.modified}</div>
@@ -209,23 +222,35 @@ function renderListView(files) {
     fileElement.className = 'list-item';
     fileElement.onclick = () => handleFileClick(file);
 
-    const icon = file.type === 'folder' ? '📁' :
-      file.name.endsWith('.mp3') ? '🎵' :
-        file.name.endsWith('.wav') ? '🎼' :
-          file.name.endsWith('.m4a') ? '🎧' :
-            file.name.endsWith('.aac') ? '🔊' : '🎵';
+    let iconHTML = "";
+
+    if (file.image) {
+      // Use provided album art or thumbnail image
+      iconHTML = `<div class="file-item-img center"><img src="${file.image}" class="image-art" alt="album art" /></div>`;
+    } else {
+      // Fallback emoji-based icons
+      const icon = file.type === 'folder' ? '📁' :
+        file.name.endsWith('.mp3') ? '🎵' :
+          file.name.endsWith('.wav') ? '🎼' :
+            file.name.endsWith('.m4a') ? '🎧' :
+              file.name.endsWith('.aac') ? '🔊' : '🎵';
+
+      iconHTML = `<div class="file-icon fallback-icon">${icon}</div>`;
+    }
+
+    console.log(iconHTML);
 
     fileElement.innerHTML = `
-            <div class="list-icon ${file.type}">
-                ${icon}
-            </div>
-            <div class="list-details">
-                <div class="list-name">${file.name}</div>
-                <div class="list-meta">
-                    ${file.size ? file.size + ' • ' : 'Folder • '}Modified: ${file.modified}
-                </div>
-            </div>
-        `;
+      <div class="list-icon ${file.type}">
+        ${iconHTML}
+      </div>
+      <div class="list-details">
+        <div class="list-name">${file.name}</div>
+        <div class="list-meta">
+          ${file.size ? file.size + ' • ' : 'Folder • '}Modified: ${file.modified}
+        </div>
+      </div>
+    `;
 
     container.appendChild(fileElement);
   });

@@ -13,6 +13,7 @@ const fs = require('fs');
 const util = require('util');
 const app = express();
 const bodyParser = require('body-parser');
+const mm = require('music-metadata');
 
 const stat = util.promisify(fs.stat);
 const readdir = util.promisify(fs.readdir);
@@ -58,6 +59,8 @@ async function scanDirectory(directory) {
     const results = [];
 
     for (const entry of entries) {
+        if (entry.startsWith('.')) continue; // skip hidden files
+
         const fullPath = path.join(directory, entry);
         const stats = await stat(fullPath);
 
@@ -69,12 +72,31 @@ async function scanDirectory(directory) {
             type: isFolder ? 'folder' : (audioExtensions.includes(ext) ? 'audio' : 'other'),
             size: isFolder ? null : formatBytes(stats.size),
             modified: stats.mtime.toISOString().replace('T', ' ').split('.')[0],
-            path: fullPath
+            path: fullPath,
+            image: null // default
         };
 
-        // Only push folders and supported audio files
+        if (fileInfo.type === 'audio') {
+            try {
+                const metadata = await mm.parseFile(fullPath);
+                const picture = metadata.common.picture?.[0];
+
+                if (picture) {
+                    const buffer = Buffer.from(picture.data); // Convert from Uint8Array or number[]
+                    const base64 = buffer.toString('base64');
+                    console
+                    const imageMime = picture.format || 'image/jpeg';
+                    const dataUrl = `data:${imageMime};base64,${base64}`;
+                    fileInfo.image = dataUrl;
+                }
+            } catch (err) {
+                console.warn(`Could not read metadata for ${entry}:`, err.message);
+            }
+        }
+
         if (fileInfo.type === 'folder' || fileInfo.type === 'audio') {
-            results.push(fileInfo);
+            if (fileInfo.name.indexOf("."))
+                results.push(fileInfo);
         }
     }
 

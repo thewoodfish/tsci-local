@@ -52,12 +52,49 @@ body {
   font-weight: bold;
 }
 
+.image-art {
+  max-width: 200px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24px;
+  margin-bottom: 15px;
+  background: linear-gradient(135deg, #667eea, #764ba2);
+  color: white;
+}
+
+.file-item-img {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+
+.center {
+  text-align: center;
+}
+
+.img-file-icon {
+  width: 50px;
+  height: 50px;
+  border-radius: 10px;
+  display: flex;
+  /* align-items: center; */
+  /* justify-content: center; */
+  font-size: 24px;
+  margin-bottom: 15px;
+  background: linear-gradient(135deg, #667eea, #764ba2);
+  color: white;
+}
+
 /* Override for mobile (max-width: 768px or your chosen breakpoint) */
 @media (max-width: 768px) {
   .logo-section {
-      display: block; /* or `unset` or `initial` depending on your layout needs */
-      align-items: unset;
-      gap: unset;
+    display: block;
+    /* or `unset` or `initial` depending on your layout needs */
+    align-items: unset;
+    gap: unset;
   }
 }
 
@@ -149,7 +186,8 @@ body {
   font-size: 0.9rem;
 }
 
-.filter-btn:hover, .filter-btn.active {
+.filter-btn:hover,
+.filter-btn.active {
   background: #2a5298;
   color: white;
   transform: translateY(-2px);
@@ -171,7 +209,8 @@ body {
   color: #495057;
 }
 
-.view-btn:hover, .view-btn.active {
+.view-btn:hover,
+.view-btn.active {
   background: #2a5298;
   border-color: #2a5298;
   color: white;
@@ -383,27 +422,27 @@ body {
 
 @media (max-width: 768px) {
   .portal-container {
-      padding: 10px;
+    padding: 10px;
   }
-  
+
   .header-top {
-      flex-direction: column;
-      gap: 15px;
-      text-align: center;
+    flex-direction: column;
+    gap: 15px;
+    text-align: center;
   }
-  
+
   .controls-bar {
-      flex-direction: column;
-      gap: 15px;
+    flex-direction: column;
+    gap: 15px;
   }
-  
+
   .search-section {
-      flex-direction: column;
-      width: 100%;
+    flex-direction: column;
+    width: 100%;
   }
-  
+
   .files-grid {
-      grid-template-columns: 1fr;
+    grid-template-columns: 1fr;
   }
 }
 
@@ -424,6 +463,11 @@ body {
 }
 
 @keyframes spin {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
+  0% {
+    transform: rotate(0deg);
+  }
+
+  100% {
+    transform: rotate(360deg);
+  }
 }
